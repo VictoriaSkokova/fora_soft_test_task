@@ -5,7 +5,9 @@ module.exports = function (server) {
     const io = socket_io(server, {
         cors: {
             origin: "*"
-        }
+        },
+        transports: ['websocket'],
+        secure: true
     });
 
     io.on('connect', socket => {

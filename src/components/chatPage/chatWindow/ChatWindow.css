@@ -8,6 +8,12 @@
 .chatWindow_form_button_icon{
     width: 20px;
     height: 20px;
+    vertical-align: middle;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .chatWindow_form {
@@ -17,11 +23,20 @@
 
 .chatWindow_form_input {
     width: 95%;
-    margin-left: 10px;
     margin-top: 10px;
     height: 30px;
     border-radius: 5px;
-    border: solid 1px #282c34;
+    border: 3px solid rgb(255, 207, 197);
+}
+
+.chatWindow_form_input[type = text] {
+    padding-left: 10px;
+    font-size: 16px;
+}
+
+.chatWindow_form_input:focus{
+    border: 3px solid rgb(246, 172, 158);
+    outline: none;
 }
 
 .chatWindow {
@@ -30,12 +45,27 @@
 }
 
 .chatWindow_form_button {
-    height: 35px;
     margin-top: 10px;
     align-self: baseline;
+    background-color: rgb(145, 155, 157);
+    border: none;
+    border-radius: 10px;
+    height: 35px;
+    width: 35px;
+    text-align: right;
+}
+
+.chatWindow_form_button:hover {
+    background-color: rgb(174, 177, 177);
 }
 
 .chatPage {
     height: 100vh;
     overflow: hidden;
+}
+
+.messagesWindow {
+    border: 3px solid rgb(255, 207, 197);
+    background-color: rgb(253, 254, 255);
+    border-radius: 15px;
 }

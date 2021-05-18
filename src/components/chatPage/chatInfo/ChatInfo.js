@@ -12,7 +12,7 @@ const ChatInfo = () => {
 
     useEffect(() => {
         setListOfMembers(context.listOfMembers?.map(value => {
-            return <ChatMember name={value.username}/>
+            return <ChatMember name={value.username}  key = {Symbol("chatMember").toString()}/>
         }));
     }, [context.listOfMembers])
 

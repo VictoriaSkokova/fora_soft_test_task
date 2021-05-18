@@ -8,12 +8,22 @@
 .chatInfo_form_button_icon{
     width: 20px;
     height: 20px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    vertical-align: bottom;
 }
+
+.chatInfo_form_button:hover{
+    background-color: rgb(174, 177, 177);
+}
+
 
 .chatInfo_form {
     display: inline-block;
     position: relative;
-    left: 30%;
 }
 
 .chatInfo_paragraph {
@@ -22,8 +32,57 @@
 
 .chatInfo_listOfMembers {
     margin-top: 10px;
+    max-height: 80vh;
+    min-height: 80vh;
+    overflow-y: scroll;
+    margin-right: 5px;
 }
+
+.chatInfo_listOfMembers::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+.chatInfo_listOfMembers::-webkit-scrollbar
+{
+    width: 6px;
+    background-color: #F5F5F5;
+}
+
+.chatInfo_listOfMembers::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: #a1a1a1;
+}
+
 
 .chatInfo_paragraph {
     font-size: 20px;
+    font-weight: 700;
+    color: rgb(016, 030, 031);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.chatInfo_header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid rgb(072, 090, 092);
+    margin-right: 20px;
+}
+
+.chatInfo_form_button {
+    background-color: rgb(145, 155, 157);
+    border: none;
+    border-radius: 10px;
+    height: 30px;
+    width: 30px;
+    vertical-align: bottom;
+    margin-bottom: 5px;
 }

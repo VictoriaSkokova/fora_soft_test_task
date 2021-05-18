@@ -1,3 +1,8 @@
 .messageBlock {
-    position: relative;
+}
+
+.messageBlock_messageBody {
+    border-radius: 10px;
+    border: 3px solid rgb(255, 207, 197);
+    max-width: 70%;
 }

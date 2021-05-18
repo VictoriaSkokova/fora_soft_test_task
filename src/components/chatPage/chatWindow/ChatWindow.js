@@ -26,8 +26,8 @@ const ChatWindow = () => {
 
     return (<div className ='chatWindow'>
         <MessagesWindow/>
-        <form className ='chatWindow_form'>
-            <input className ='chatWindow_form_input' placeholder = 'Star typing your message...' ref = {inputRef}/>
+        <form className ='chatWindow_form' onSubmit={(e) => e.preventDefault()}>
+            <input className ='chatWindow_form_input' placeholder = 'Star typing your message...' ref = {inputRef} type='text'/>
             <button id = {'send_button'} className ='chatWindow_form_button' onClick={handleMessageSend} type = 'button'>
                 <img className = 'chatWindow_form_button_icon' src = {sendIcon} alt = 'send icon'/>
             </button>
