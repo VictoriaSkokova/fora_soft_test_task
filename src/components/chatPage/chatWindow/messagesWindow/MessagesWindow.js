@@ -11,7 +11,7 @@ const MessagesWindow = () => {
             setListOfMessages(prevState => [...prevState, <MessageBlock name={context.newMessage.username}
                                                     time={context.newMessage.time}
                                                     text={context.newMessage.text}
-                                                    isCurrentUser={context.newMessage.userSendingMessage === context.userInfo.userId}
+                                                    isCurrentUser={context.newMessage.userId === context.userInfo.userId}
                 />]
             )
         }

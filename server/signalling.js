@@ -48,7 +48,7 @@ module.exports = function (server) {
 
         socket.on('message', (data) => {
             if (data.text !== null && data.text !== undefined && data.text !== "")
-                sendMessage(data.room, data.username, data.time, data.text, socket.id);
+                sendMessage(data.room, data.username, data.time, data.text, data.userId);
             else {
                 socket.emit('error', {errorType: 'messageError'});
             }
