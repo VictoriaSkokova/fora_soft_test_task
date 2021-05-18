@@ -1,0 +1,29 @@
+.chatInfo{
+    display: flex;
+    flex-direction: column;
+    margin-left: 30px;
+    margin-top: 20px;
+}
+
+.chatInfo_form_button_icon{
+    width: 20px;
+    height: 20px;
+}
+
+.chatInfo_form {
+    display: inline-block;
+    position: relative;
+    left: 30%;
+}
+
+.chatInfo_paragraph {
+    display: inline-block;
+}
+
+.chatInfo_listOfMembers {
+    margin-top: 10px;
+}
+
+.chatInfo_paragraph {
+    font-size: 20px;
+}
