@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const http = require('http');
 const path = require('path');
-const ws = require('ws');
+const Turn = require('node-turn');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const port = process.env.PORT || 8080;
@@ -33,6 +33,21 @@ app.get('/*', function (req, res) {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
+
+app.get('/', (req, res) => {
+    res.send('App works');
+});
+
+const turnServer = new Turn({
+    // set options
+    authMech: 'long-term',
+    credentials: {
+        username: 'turnclient',
+        credential: '$0mep@$$w0rd'
+    }
+});
+turnServer.start();
+
 server.listen(port, () => {
-   console.log(`Server start on port ${port}`);
+    console.log(`Server start on port ${port}`);
 });

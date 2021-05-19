@@ -1,0 +1,19 @@
+.videoChatUser video {
+    width: 250px;
+    height: 250px;
+}
+
+.videoChat_block_list {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    max-height: 800px;
+    margin-left: 5px;
+}
+
+.videoChatUser_name {
+    position: relative;
+    left: 10px;
+    top: 20px;
+    font-size: 20px;
+    font-weight: 700;
+}

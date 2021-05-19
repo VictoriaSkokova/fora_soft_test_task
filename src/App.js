@@ -5,6 +5,7 @@ import {v4 as uuidv4} from 'uuid';
 import {SocketContextProvider} from './context/SocketContext';
 import MainPage from './components/mainPage/MainPage';
 
+
 function App() {
     const [room, setRoom] = useState();
 

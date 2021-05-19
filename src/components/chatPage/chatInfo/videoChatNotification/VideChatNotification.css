@@ -1,0 +1,33 @@
+.videoChatNotification {
+    border: 3px solid rgb(255, 207, 197);
+    background-color: rgb(253, 254, 255);
+    border-radius: 15px;
+    max-width: 90%;
+    margin-bottom: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+
+.videoChatNotification_header {
+    font-size: 20px;
+    margin-left: 20px;
+}
+
+.videoChatNotification_form {
+    margin-right: 10px;
+}
+
+.videoChatNotification_form_button {
+    border: 3px solid rgb(245, 168, 167);
+    border-radius: 10px;
+    color: rgb(253, 254, 255);
+    background-color: rgb(246, 190, 179);
+    font-weight: 700;
+}
+
+.videoChatNotification_form_button:hover {
+    background-color: rgb(245, 168, 167);
+}
+

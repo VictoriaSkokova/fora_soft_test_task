@@ -36,6 +36,7 @@
     min-height: 80vh;
     overflow-y: scroll;
     margin-right: 5px;
+    max-width: 400px;
 }
 
 .chatInfo_listOfMembers::-webkit-scrollbar-track
@@ -85,4 +86,12 @@
     width: 30px;
     vertical-align: bottom;
     margin-bottom: 5px;
+}
+
+
+.videoPage{
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    background-color: rgb(255, 234, 231);
+    overflow: hidden;
 }

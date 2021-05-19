@@ -1,5 +1,17 @@
 .chatPage {
     display: grid;
     grid-template-columns: 3fr 1fr;
-    background-color: rgba(255, 234, 231);
+    background-color: rgb(255, 234, 231);
+}
+
+.chatPage .videoChat {
+    display: none;
+}
+
+.videoPage .chatInfo {
+    display: none;
+}
+
+.videoPage .messagesWindow, .videoPage .chatWindow_form{
+    margin-right: 20px;
 }

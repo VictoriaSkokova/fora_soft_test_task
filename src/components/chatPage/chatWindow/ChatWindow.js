@@ -18,10 +18,10 @@ const ChatWindow = () => {
         context.socketSend({
             type: 'message',
             data: {
-                user: context.userInfo.userId,
-                username: context.userInfo.username,
-                room: context.userInfo.roomId,
-                text: inputRef.current.value,
+                user: context.userInfo?.userId,
+                username: context.userInfo?.username,
+                room: context.userInfo?.roomId,
+                text: inputRef.current?.value,
                 time: `${timeHours}:${timeMinutes}`
             }
         });
@@ -29,14 +29,16 @@ const ChatWindow = () => {
     }
 
     useEffect(() => {
-        if(context.errorMessage.messageError && inputRef){
+        if (context.errorMessage.messageError && inputRef) {
             inputRef.current.style.backgroundColor = 'rgba(255, 234, 231, 30)';
-            setTimeout(() => {inputRef.current.style.backgroundColor = 'rgb(253, 254, 255)';}, 500)
+            setTimeout(() => {
+                inputRef.current.style.backgroundColor = 'rgb(253, 254, 255)';
+            }, 500)
         }
     }, [context.errorMessage.messageError]);
 
     useEffect(() => {
-        if(inputRef) {
+        if (inputRef) {
             inputRef.current.focus();
         }
     }, [inputRef]);

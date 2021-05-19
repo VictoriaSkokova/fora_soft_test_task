@@ -1,13 +1,17 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {io} from 'socket.io-client';
+import {currentWebRTC} from '../context/WebRTC';
 
+//Set end point of socket connection
 const ENDPOINT = (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') ?
     'http://localhost:8080' : 'https://fora-soft-webrtc-chat.herokuapp.com/';
 
 const DEFAULT_SOCKET = {};
 
+//Create context for exchanging information
 const SocketContext = React.createContext(DEFAULT_SOCKET);
 
+//Creating socket provider react component
 const SocketContextProvider = props => {
     const {children, room} = props;
     const [roomId, setRoom] = useState(props.room);
@@ -18,10 +22,23 @@ const SocketContextProvider = props => {
     const [isStreamOn, setIsStreamOn] = useState(false);
     const [newMessage, setNewMessage] = useState();
     const [errorMessage, setErrorMessage] = useState({loggedError: false, messageError: false});
+    const [localVideo, setLocalVideo] = useState();
+    const [listVideo, setListVideo] = useState([]);
+    const [userVideoName, setUserVideoName] = useState(null);
 
+    const listRef = useRef([]);
+
+    const toggleVideo = () => {
+        localVideo.getVideoTracks().forEach(track => track.enabled = !track.enabled)
+    }
+
+    const toggleAudio = () => {
+        localVideo.getAudioTracks().forEach(track => track.enabled = !track.enabled)
+    }
+
+    //Create and socket in state
     useEffect(() => {
-        if (room)
-        {
+        if (room) {
             setSocket(io(ENDPOINT, {
                     transports: ['websocket', 'polling']
                 }
@@ -29,18 +46,28 @@ const SocketContextProvider = props => {
         }
     }, [roomId]);
 
+    //Set room id from link string
     useEffect(() => {
         setRoom(props.room);
     }, [props.room])
 
+    //Check is connection "ok"
     const onConnect = useCallback(() => {
         if (socket)
             console.log(socket?.connected);
     }, [socket?.connected]);
 
+    //Exit room if socket disconnect
     const onDisconnect = () => {
+        let array = listVideo.map(value => value);
+        let index = listVideo.findIndex(value => value.id === userInfo.userId);
+        array.splice(index, 1);
+        setListVideo(array.map(value => value));
         setLogged(false);
         setNewMessage(undefined);
+        setUserInfo(undefined);
+        setListOfMembers(undefined);
+        setIsStreamOn(false);
     }
 
     const onMessage = (data) => {
@@ -52,14 +79,32 @@ const SocketContextProvider = props => {
         });
     }
 
+    const onSrcObject = (id, stream) => {
+        console.log("onSrcObject", listVideo, id, stream)
+        if (listRef.current.find(value => value.id === id) === undefined) {
+            setListVideo((prevState) => {
+                    return [
+                        ...prevState, {id, stream}
+                    ]
+                }
+            )
+            listRef.current.push({id, stream});
+        }
+    }
+
     const onLogged = (data) => {
-        setLogged(true);
         setUserInfo({
             username: data.username,
             userId: data.userId,
-            roomId: data.roomId
+            roomId: data.roomId,
+            isOnStream: false
         });
-        setIsStreamOn(data.isStreamOn);
+        setIsStreamOn(data.isStreamOnline);
+        currentWebRTC.socket = socket;
+        currentWebRTC.userId = data.userId;
+        currentWebRTC.roomId = data.roomId;
+        currentWebRTC.onSrcObject = onSrcObject;
+        setLogged(true);
     }
 
     const onUpdateList = (data) => {
@@ -67,7 +112,7 @@ const SocketContextProvider = props => {
     }
 
     const onHandleError = (data) => {
-        if(data.errorType === 'loggedError') {
+        if (data.errorType === 'loggedError') {
             setErrorMessage(prevState => {
                 return {...prevState, loggedError: true}
             })
@@ -76,7 +121,25 @@ const SocketContextProvider = props => {
                 return {...prevState, messageError: true}
             })
         }
-        console.log(data);
+    }
+
+    const onHandleStreamOn = () => {
+        setIsStreamOn(true);
+    }
+
+    const onHandleStreamOff = () => {
+        setIsStreamOn(false);
+    }
+
+    const onHandleSetUserName = (data) => {
+        setUserVideoName(data.name);
+    }
+
+    const onHandleUserLeft = (data) => {
+        let array = listVideo.map(value => value);
+        let index = listVideo.findIndex(value => value.id === data.userId);
+        array.splice(index, 1);
+        setListVideo(array.map(value => value));
     }
 
     useEffect(() => {
@@ -86,13 +149,15 @@ const SocketContextProvider = props => {
             socket.on('logged', onLogged);
             socket.on('send:message', onMessage);
             socket.on('change:list', onUpdateList);
-            socket.on('error', onHandleError)
+            socket.on('error', onHandleError);
+            socket.on('streamOn', onHandleStreamOn);
+            socket.on('streamOff', onHandleStreamOff);
+            socket.on('setUserName', onHandleSetUserName);
+            socket.on('userLeftRTC', onHandleUserLeft);
+            socket.on('webRTC', currentWebRTC.socketReceived);
         }
     }, [socket])
 
-
-// data = { to: ..., message: ... }
-// type = webRTC / message
 
     const socketSend = useCallback(({type, data}) => {
         if (socket) {
@@ -101,9 +166,36 @@ const SocketContextProvider = props => {
         }
     }, [socket]);
 
+    const userStream = (isOnStream, mediaStream) => {
+        setUserInfo((prevState) => {
+            return {...prevState, isOnStream}
+        });
+        if (isOnStream)
+            setLocalVideo(mediaStream);
+        else {
+            currentWebRTC.onBeforeUnload();
+        }
+    }
+
     return (
         <SocketContext.Provider
-            value={{room, socket, socketSend, logged, newMessage, isStreamOn, listOfMembers, userInfo, errorMessage}}>
+            value={{
+                room,
+                socket,
+                socketSend,
+                logged,
+                newMessage,
+                isStreamOn,
+                listOfMembers,
+                userInfo,
+                errorMessage,
+                userStream,
+                localVideo,
+                listVideo,
+                userVideoName,
+                toggleVideo,
+                toggleAudio
+            }}>
             {children}
         </SocketContext.Provider>
     )

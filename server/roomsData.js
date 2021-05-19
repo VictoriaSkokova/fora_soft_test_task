@@ -18,6 +18,11 @@ module.exports = {
 
         return username !== undefined ? username : null;
     },
+    getUsername: userId => {
+        let username = usersData.find(userValue => userValue.userId === userId);
+
+        return username !== undefined ? username.username : null;
+    },
     //Function for adding new user
     addNewUser: (userId, userName, roomId) => {
         usersData.push({
@@ -37,33 +42,61 @@ module.exports = {
                 listOfMembers: [{userId, username: userName}]
             });
         }
-
-        console.log("--------------------");
-        console.log("RoomsData:", roomsData);
-        console.log("UsersData", usersData);
+    },
+    addNewUserToRoom: (userId, roomId, userName) => {
+        let roomIndex = roomsData.findIndex(roomValue => roomValue.roomId === roomId);
+        if (roomIndex !== -1) {
+            roomsData[roomIndex].listOfMembers.push({userId, username: userName});
+        } else {
+            roomsData.push({
+                roomId,
+                isStreamOn: false,
+                listOfMembers: [{userId, username: userName}]
+            });
+        }
     },
     //Function for removing user from lists if disconnect
-    removeUser: (userId) => {
+    removeUser: (userId, roomId) => {
         try {
-            let userIndex = usersData.findIndex(userValue => userValue.userId === userId);
-            if (userIndex !== -1) {
-                let roomId = usersData[userIndex].roomId;
-                usersData.splice(userIndex, 1);
-
+            if (roomId.includes('video')) {
                 let roomsIndex = roomsData.findIndex(roomValue => roomValue.roomId === roomId);
                 let userIndexInRoom = roomsData[roomsIndex].listOfMembers.findIndex(userValue => userValue.userId === userId);
                 roomsData[roomsIndex].listOfMembers.splice(userIndexInRoom, 1);
 
                 if (roomsData[roomsIndex].listOfMembers.length === 0) {
                     roomsData.splice(roomsIndex, 1);
+                    return false;
+                } else {
+                    return true;
                 }
+            } else {
+                let userIndex = usersData.findIndex(userValue => userValue.userId === userId);
+                if (userIndex !== -1) {
+                    usersData.splice(userIndex, 1);
 
-                console.log("--------------------");
-                console.log("RoomsData:", roomsData);
-                console.log("UsersData", usersData);
+                    let roomsIndex = roomsData.findIndex(roomValue => roomValue.roomId === roomId);
+                    let userIndexInRoom = roomsData[roomsIndex].listOfMembers.findIndex(userValue => userValue.userId === userId);
+                    roomsData[roomsIndex].listOfMembers.splice(userIndexInRoom, 1);
+
+                    if (roomsData[roomsIndex].listOfMembers.length === 0) {
+                        roomsData.splice(roomsIndex, 1);
+                    }
+                }
             }
         } catch (e) {
             console.log(e);
+        }
+    },
+    setStreamOn: (roomId) => {
+        let roomIndex = roomsData.findIndex(roomValue => roomValue.roomId === roomId);
+        if (roomIndex !== -1) {
+            roomsData[roomIndex].isStreamOn = true;
+        }
+    },
+    setStreamOff: (roomId) => {
+        let roomIndex = roomsData.findIndex(roomValue => roomValue.roomId === roomId);
+        if (roomIndex !== -1) {
+            roomsData[roomIndex].isStreamOn = false;
         }
     }
 };
