@@ -14,7 +14,7 @@ module.exports = function (server) {
         socket.on('join', async (data) => {
             const {room, username, time} = data;
 
-            if (username !== 'Server' || username === undefined || username === null) {
+            if (username !== '' && username !== undefined && username !== null && username !== ' ') {
                 roomsData.addNewUser(socket.id, username, room);
                 let listUsersOnline = roomsData.getRoomMembers(room);
                 let isStreamOnline = roomsData.roomIsStreamOn(room);
@@ -27,7 +27,7 @@ module.exports = function (server) {
                 });
 
                 socket.join(room);
-                sendMessage(room, username, time, `${username} just join chat room!`, socket.id);
+                sendMessage(room, null, time, `${username} just join chat room!`, socket.id);
                 updateList(listUsersOnline, room);
             } else {
                 socket.emit('error', {errorType: 'loggedError'});
@@ -49,8 +49,8 @@ module.exports = function (server) {
         });
 
         socket.on('message', (data) => {
-            if (data.text !== null && data.text !== undefined && data.text !== "")
-                sendMessage(data.room, data.username, data.time, data.text, data.userId);
+            if (data.text !== null && data.text !== undefined && data.text !== '' && data.text !== ' ')
+                sendMessage(data.room, data.username, data.time, data.text, data.user);
             else {
                 socket.emit('error', {errorType: 'messageError'});
             }

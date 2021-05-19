@@ -1,8 +1,32 @@
 .messageBlock {
+    padding-top: 10px;
+    padding-bottom: 5px;
 }
 
 .messageBlock_messageBody {
     border-radius: 10px;
-    border: 3px solid rgb(255, 207, 197);
-    max-width: 70%;
+    border: 3px solid rgb(192, 200, 203);
+    background-color: rgb(192, 200, 203);
+    margin-top: 5px;
+    max-width: 500px;
+}
+
+.messageBlock_name {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.messageBlock_messageBody_text {
+    margin:0 10px;
+    max-width: 500px;
+    word-wrap: break-word;
+}
+
+.messageBlock_messageBody_text #text{
+    word-wrap: break-word;
+}
+
+.messageBlock_messageBody_time {
+    font-weight: 300;
+    font-size: 12px;
 }

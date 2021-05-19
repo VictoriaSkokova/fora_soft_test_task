@@ -5,7 +5,7 @@
     margin-top: 20px;
 }
 
-.chatWindow_form_button_icon{
+.chatWindow_form_button_icon {
     width: 20px;
     height: 20px;
     vertical-align: middle;
@@ -34,7 +34,7 @@
     font-size: 16px;
 }
 
-.chatWindow_form_input:focus{
+.chatWindow_form_input:focus {
     border: 3px solid rgb(246, 172, 158);
     outline: none;
 }

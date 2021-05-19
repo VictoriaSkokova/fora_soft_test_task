@@ -6,7 +6,7 @@ import LoginPage from "../loginPage/LoginPage";
 const MainPage = () => {
     const socketContext = useContext(SocketContext);
 
-    return (<div>
+    return (<div className={socketContext.logged? 'mainPageChat': 'mainPage'}>
         {socketContext.logged ? <ChatPage/> : <LoginPage/>}
     </div>);
 }

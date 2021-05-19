@@ -17,6 +17,7 @@ const SocketContextProvider = props => {
     const [listOfMembers, setListOfMembers] = useState();
     const [isStreamOn, setIsStreamOn] = useState(false);
     const [newMessage, setNewMessage] = useState();
+    const [errorMessage, setErrorMessage] = useState({loggedError: false, messageError: false});
 
     useEffect(() => {
         if (room)
@@ -66,6 +67,15 @@ const SocketContextProvider = props => {
     }
 
     const onHandleError = (data) => {
+        if(data.errorType === 'loggedError') {
+            setErrorMessage(prevState => {
+                return {...prevState, loggedError: true}
+            })
+        } else {
+            setErrorMessage(prevState => {
+                return {...prevState, messageError: true}
+            })
+        }
         console.log(data);
     }
 
@@ -85,13 +95,15 @@ const SocketContextProvider = props => {
 // type = webRTC / message
 
     const socketSend = useCallback(({type, data}) => {
-        if (socket)
+        if (socket) {
             socket.emit(type, data);
+            setErrorMessage({loggedError: false, messageError: false});
+        }
     }, [socket]);
 
     return (
         <SocketContext.Provider
-            value={{room, socket, socketSend, logged, newMessage, isStreamOn, listOfMembers, userInfo}}>
+            value={{room, socket, socketSend, logged, newMessage, isStreamOn, listOfMembers, userInfo, errorMessage}}>
             {children}
         </SocketContext.Provider>
     )

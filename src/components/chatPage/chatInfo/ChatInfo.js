@@ -12,7 +12,7 @@ const ChatInfo = () => {
 
     useEffect(() => {
         setListOfMembers(context.listOfMembers?.map(value => {
-            return <ChatMember name={value.username}  key = {Symbol("chatMember").toString()}/>
+            return <ChatMember name={value.username}  key = {Math.random().toString(36).substr(2, 9)}/>
         }));
     }, [context.listOfMembers])
 

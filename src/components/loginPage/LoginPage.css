@@ -1,19 +1,68 @@
-.loginPage {
+.mainPage{
+    background-color: rgb(255, 234, 231);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
 
+.loginPage {
+    border: 3px solid rgb(255, 207, 197);
+    background-color: rgb(253, 254, 255);
+    border-radius: 15px;
+    height: 200px;
+    width: 500px;
+    align-self: center;
+    margin-bottom: 50px;
 }
 
 .loginPage_header {
-
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 30px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    color: rgb(016, 030, 031);
 }
 
 .loginPage_form {
-
+    margin-left: 20px;
 }
 
 .loginPage_form_input {
+    height: 30px;
+    border-radius: 5px;
+    border: 3px solid rgb(255, 207, 197);
+    width: 90%;
+}
 
+.loginPage_form_input[type = text] {
+    padding-left: 10px;
+    font-size: 16px;
+}
+
+.loginPage_form_input:focus {
+    border: 3px solid rgb(246, 172, 158);
+    outline: none;
 }
 
 .loginPage_form_button {
+    display: block;
+    margin-top: 20px;
+    width: 80px;
+    height: 30px;
+    font-size: 16px;
+    font-weight: 900;
+    background-color: rgb(246, 190, 179);
+    border: 3px solid rgb(245, 168, 167);
+    border-radius: 10px;
+    color: rgb(253, 254, 255);
+    position: relative;
+    left: 70%;
+    margin-left: 35px;
+}
 
+.loginPage_form_button:hover {
+    background-color: rgb(245, 168, 167);
 }
