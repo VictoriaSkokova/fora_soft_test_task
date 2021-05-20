@@ -1,15 +1,14 @@
-import EventListeners from './eventListeners';
 import {currentUserWebRTC} from './userWebRTC';
+
 const STUN_URL = 'stun:stun.l.google.com:19302';
 
-class WebRTC extends EventListeners {
+class WebRTC {
     constructor() {
-        super();
         this._connectionCount = 0;
         this._peers = {};
 
         this.server = {
-            iceServers: [{ urls: STUN_URL }]
+            iceServers: [{urls: STUN_URL}]
         };
     }
 
@@ -45,12 +44,6 @@ class WebRTC extends EventListeners {
 
     set connectionCount(value) {
         this._connectionsCount = value;
-        this._eventListeners['connectionsChange']?.forEach(i => {
-            i({
-                count: this._connectionsCount,
-                peers: this._peers
-            })
-        });
     }
 
     onBeforeUnload = () => {
@@ -141,7 +134,6 @@ class WebRTC extends EventListeners {
         peerConnection.onicecandidate = function (event) {
             if (event.candidate)
                 target.sendWebRTCMessage(id, "candidate", event.candidate)
-            //this.sendWebRTCMessage(id, "candidate", event.candidate);
         }
 
         peerConnection.oniceconnectionstatechange = () => {

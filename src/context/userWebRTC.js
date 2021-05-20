@@ -1,8 +1,5 @@
-import EventListeners from './eventListeners';
-
-class UserWebRTC extends EventListeners{
+class UserWebRTC {
     constructor() {
-        super();
         this._user = {id: '', username: '', roomId: ''};
         this._isCameraOn = false;
         this._localStream = null;
@@ -46,10 +43,6 @@ class UserWebRTC extends EventListeners{
 
     addStream(id, stream) {
         this._streams[id] = stream;
-        this._eventListeners[`streamAdded-${id}`]?.forEach(i => {
-            if (this._streams[id] !== undefined)
-                i(this._streams[id])
-        });
         if (this._id === id) {
             this._localStream = this._streams[id];
         }
@@ -86,10 +79,7 @@ class UserWebRTC extends EventListeners{
         let track = this.getTrack(id, type);
         if (track !== undefined) {
             track.enabled = !track.enabled;
-            this._eventListeners[`streamToggled-${id}`]?.forEach(i => {
-                if (this._streams[id] !== undefined)
-                    i(this._streams[id])
-            });
+
         }
         return track ?? {enabled: false};
     }
