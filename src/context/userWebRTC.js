@@ -35,14 +35,6 @@ class UserWebRTC extends EventListeners{
     }
 
     setLocalStream(stream, success) {
-        /*return navigator.mediaDevices.getUserMedia({video: true, audio: true}).then(stream => {
-            this._localStream = stream;
-            this._isCameraOn = true;
-            return new Promise(stream => console.log(stream))
-        }).catch(error => {
-            console.error('Error get user media', error)
-            this._isCameraOn = false;
-        });*/
         if (success) {
             this._localStream = stream;
             this._isCameraOn = true;
@@ -63,7 +55,6 @@ class UserWebRTC extends EventListeners{
         }
         console.log(this._streams);
     }
-
 
     getTrack(id, type) {
         let track;

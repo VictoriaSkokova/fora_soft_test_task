@@ -18,6 +18,10 @@ class WebRTC extends EventListeners {
         this._onSrcObject = functionState;
     }
 
+    set onUserLeft(functionState) {
+        this._onUserLeft = functionState;
+    }
+
     set socket(socketConnection) {
         this._socket = socketConnection;
     }
@@ -68,7 +72,6 @@ class WebRTC extends EventListeners {
         let to = value.userTo;
         let type = value.type;
         let data = value.data;
-        console.log("socketReceived", {id, to, type, data});
         switch (type) {
             case 'newPeerReceived':
                 this.newPeerReceived(id);
@@ -90,7 +93,6 @@ class WebRTC extends EventListeners {
     }
 
     newPeerReceived = async (id) => {
-        console.log(id);
         this.createConnection(id);
         const peerConnection = this._peers[id].connection;
         const tracks = this._peers[id].tracks;
@@ -142,12 +144,13 @@ class WebRTC extends EventListeners {
             //this.sendWebRTCMessage(id, "candidate", event.candidate);
         }
 
-        peerConnection.oniceconnectionstatechange = (event) => {
+        peerConnection.oniceconnectionstatechange = () => {
             switch (peerConnection.iceConnectionState) {
                 case 'disconnected': {
                     delete this._peers[id];
                     currentUserWebRTC.removeStream(id);
                     this.connectionsCount = this.connectionsCount - 1;
+                    this._onUserLeft({userId: id});
                     console.log(`[${id}] disconnected. Peers: ${this.connectionsCount}`);
                     break;
                 }
@@ -166,9 +169,7 @@ class WebRTC extends EventListeners {
 
     initMedia = async (id, tracks, peerConnection, target) => {
         peerConnection.ontrack = function ({streams: [stream]}) {
-            console.log(target);
             currentUserWebRTC.addStream(id, stream);
-            console.log("INITMEDIA", id, stream);
             target._onSrcObject(id, stream);
         }
 

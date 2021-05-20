@@ -1,6 +1,5 @@
-import logo from './logo.svg';
 import './App.css';
-import { useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {v4 as uuidv4} from 'uuid';
 import {SocketContextProvider} from './context/SocketContext';
 import MainPage from './components/mainPage/MainPage';

@@ -75,11 +75,13 @@ module.exports = {
                     usersData.splice(userIndex, 1);
 
                     let roomsIndex = roomsData.findIndex(roomValue => roomValue.roomId === roomId);
-                    let userIndexInRoom = roomsData[roomsIndex].listOfMembers.findIndex(userValue => userValue.userId === userId);
-                    roomsData[roomsIndex].listOfMembers.splice(userIndexInRoom, 1);
+                    if (roomsIndex !== -1) {
+                        let userIndexInRoom = roomsData[roomsIndex].listOfMembers.findIndex(userValue => userValue.userId === userId);
+                        roomsData[roomsIndex].listOfMembers.splice(userIndexInRoom, 1);
 
-                    if (roomsData[roomsIndex].listOfMembers.length === 0) {
-                        roomsData.splice(roomsIndex, 1);
+                        if (roomsData[roomsIndex].listOfMembers.length === 0) {
+                            roomsData.splice(roomsIndex, 1);
+                        }
                     }
                 }
             }

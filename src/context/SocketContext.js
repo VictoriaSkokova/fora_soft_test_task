@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {io} from 'socket.io-client';
-import {currentWebRTC} from '../context/WebRTC';
+import {currentWebRTC} from './WebRTC';
+import {currentUserWebRTC} from "./userWebRTC";
 
 //Set end point of socket connection
 const ENDPOINT = (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') ?
@@ -68,6 +69,7 @@ const SocketContextProvider = props => {
         setUserInfo(undefined);
         setListOfMembers(undefined);
         setIsStreamOn(false);
+        currentWebRTC.onBeforeUnload();
     }
 
     const onMessage = (data) => {
@@ -80,7 +82,6 @@ const SocketContextProvider = props => {
     }
 
     const onSrcObject = (id, stream) => {
-        console.log("onSrcObject", listVideo, id, stream)
         if (listRef.current.find(value => value.id === id) === undefined) {
             setListVideo((prevState) => {
                     return [
@@ -104,6 +105,7 @@ const SocketContextProvider = props => {
         currentWebRTC.userId = data.userId;
         currentWebRTC.roomId = data.roomId;
         currentWebRTC.onSrcObject = onSrcObject;
+        currentWebRTC.onUserLeft = onHandleUserLeft;
         setLogged(true);
     }
 
@@ -136,10 +138,47 @@ const SocketContextProvider = props => {
     }
 
     const onHandleUserLeft = (data) => {
-        let array = listVideo.map(value => value);
-        let index = listVideo.findIndex(value => value.id === data.userId);
+        currentWebRTC.onBeforeUnload();
+        currentWebRTC._peers[data.userId] = undefined;
+        delete currentWebRTC._peers[data.userId];
+        currentUserWebRTC.removeStream(data.userId);
+        currentWebRTC.connectionsCount = currentWebRTC.connectionsCount - 1;
+        let array = listRef.current.map(value => value);
+        let index = listRef.current.findIndex(value => value.id === data.userId);
         array.splice(index, 1);
         setListVideo(array.map(value => value));
+        listRef.current = array.map(value => value);
+    }
+
+    useEffect(() => {
+        if (!logged)
+            return;
+        window.addEventListener("beforeunload", finishAllTasks);
+        window.addEventListener("beforeunload", finishAllTasks);
+        return () => {
+            window.removeEventListener("beforeunload", finishAllTasks);
+            window.removeEventListener("beforeunload", finishAllTasks);
+        };
+    }, [logged]);
+
+    const finishAllTasks = () => {
+        currentWebRTC.onBeforeUnload();
+        //Call clear webRTC connections
+        socketSend({
+            type: 'leaveWebRtc', data: {
+                userId: userInfo.userId,
+                username: userInfo.username,
+                roomId: userInfo.roomId
+            }
+        });
+        //Call clear user lists
+        socketSend({
+            type: 'leaveChat', data: {
+                userId: userInfo.userId,
+                username: userInfo.username,
+                roomId: userInfo.roomId
+            }
+        });
     }
 
     useEffect(() => {

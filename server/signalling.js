@@ -112,6 +112,7 @@ module.exports = function (server) {
 
         const handleSetUserName = (data) => {
             let username = roomsData.getUsername(data.id);
+            console.log(username);
             socket.emit('setUserName', {name: username});
         }
 
@@ -122,6 +123,7 @@ module.exports = function (server) {
         socket.on('getUserName', handleSetUserName)
         socket.on('webRTC', handleWebRTCConnection);
         socket.on('newWebRCT', handleWebRTCNewMember);
+        socket.on('leaveChat', handleDisconnect);
         socket.on('leaveWebRtc', handleLeaveVideoChat);
     });
 }

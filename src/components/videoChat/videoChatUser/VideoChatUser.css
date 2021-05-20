@@ -7,13 +7,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     max-height: 800px;
-    margin-left: 5px;
-}
-
-.videoChatUser_name {
+    margin-left: 15px;
     position: relative;
-    left: 10px;
-    top: 20px;
-    font-size: 20px;
-    font-weight: 700;
+    bottom: 20px;
 }

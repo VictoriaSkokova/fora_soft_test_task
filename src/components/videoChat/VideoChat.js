@@ -12,11 +12,15 @@ import VideoChatUser from './videoChatUser/VideoChatUser';
 const VideoChat = () => {
     let context = useContext(SocketContext);
     const localVideoTag = useRef();
+    const [listShowVideo, setListShowVideo] = useState([]);
     const [buttonCamera, setButtonCamera] = useState(true);
     const [buttonMic, setButtonMic] = useState(true);
 
     const handleEndCall = () => {
         context.userStream(false);
+        currentUserWebRTC._isCameraOn = false;
+        currentUserWebRTC._localStream = null;
+        currentUserWebRTC._streams = {};
         let timeNow = new Date();
         let timeMinutes = timeNow.getMinutes().toString();
         timeMinutes = timeMinutes.length === 1 ? `0${timeMinutes}` : timeMinutes;
@@ -39,20 +43,20 @@ const VideoChat = () => {
         }
     }, [context.localVideo])
 
-    //<video autoPlay muted className='local-video' ref={localVideoTag}/>
+    useEffect(() => {
+        setListShowVideo(context.listVideo.filter(item => item !== context.userInfo.userId).map(videoItem => {
+            return <VideoChatUser id={videoItem.id} type='remote' stream={videoItem.stream}/>
+        }))
+    }, [context.listVideo])
 
     return (<div className='videoChat'>
         <div className='videoChat_block'>
             <div className='videoChat_block_list'>
                 <div className='videoChatUser'>
-                    <div className='videoChatUser_name'>{context.userInfo.username}</div>
                     <video autoPlay muted className='local-video' ref={localVideoTag}/>
                 </div>
                 {
-                    context.listVideo.filter(item => item !== context.userInfo.userId).map(videoItem => {
-                        console.log("item", videoItem);
-                        return <VideoChatUser id = {videoItem.id} type = 'remote' stream = {videoItem.stream}/>
-                    })
+                    listShowVideo.map(value => value)
                 }
             </div>
             <form className='videoChat_block_form'>

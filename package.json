@@ -18,8 +18,7 @@
     "socket.io": "^4.1.1",
     "socket.io-client": "^4.1.1",
     "uuid": "^8.3.2",
-    "web-vitals": "^1.1.2",
-    "ws": "^7.4.5"
+    "web-vitals": "^1.1.2"
   },
   "devDependencies": {
     "eslint": "^7.26.0",
