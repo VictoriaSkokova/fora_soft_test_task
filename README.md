@@ -10,7 +10,7 @@ This project is a web-application providing such functional as:
 7. List of users online in certain room is also provided.
 
 The project contains the following technologies:
-1. npm - Node Package Manager.
+1. npm - Node Package Manager
 2. Node.js Express
 3. cors
 4. body-parser
@@ -18,7 +18,7 @@ The project contains the following technologies:
 6. socket.io-client
 7. React JS
 
-###Link to deployment on Heroku: Cloud Application Platform
+### Link to deployment on Heroku: Cloud Application Platform
 You could try this project yourself following link:
 > https://fora-soft-webrtc-chat.herokuapp.com/
 
